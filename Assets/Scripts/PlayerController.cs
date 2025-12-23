@@ -3,57 +3,100 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 15f;
-    [SerializeField] float jumpAmount = 20f;
+    [SerializeField] float moveSpeed = 5;
+    [SerializeField] float jumpAmount = 6;
+
+    bool touchingGround = false;
+    public bool running;
+    public bool idle;
+    public bool jumping;
 
     Vector2 moveVector;
-    bool touchingGround = false;
+    LayerMask groundLayer;
 
-    InputAction move;
-    InputAction jump;
-    Rigidbody2D rb2D;
+    InputAction moveAction;
+    InputAction jumpAction;
+    Rigidbody2D rB;
+    SpriteRenderer spriteRenderer;
 
     void Start()
     {
-        move = InputSystem.actions.FindAction("Move");
-        jump = InputSystem.actions.FindAction("Jump");
-        rb2D = GetComponent<Rigidbody2D>();
+        groundLayer = LayerMask.GetMask("Ground");
+
+        moveAction = InputSystem.actions.FindAction("Move");
+        jumpAction = InputSystem.actions.FindAction("Jump");
+        rB = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
+
+    void FixedUpdate()
+    {
+        PlayerMovement();
+        GroundCheck();
+    }
+
     void Update()
     {
-        moveVector = move.ReadValue<Vector2>();
-
-        MovePlayer();
-        Jump();
-        CheckForGround();
+        AnimationParameterCheck();
     }
 
-
-
-    void MovePlayer()
+    void PlayerMovement()
     {
-        if (moveVector.x < 0)
+        moveVector = moveAction.ReadValue<Vector2>();
+
+        if (moveVector.x > 0)
         {
-            rb2D.AddForceX(-moveSpeed); 
+            rB.linearVelocityX = moveSpeed;
+            spriteRenderer.flipX = false;
         }
-        else if (moveVector.x > 0)
+        else if (moveVector.x < 0)
         {
-            rb2D.AddForceX(moveSpeed);
+            rB.linearVelocityX = -moveSpeed;
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            rB.linearVelocityX = 0;
+        }
+
+        if (touchingGround && jumpAction.IsPressed())
+        {
+            rB.linearVelocityY = jumpAmount;
         }
     }
 
-    void Jump()
+    void AnimationParameterCheck()
     {
-        if (touchingGround && jump.IsPressed())
+        if (!touchingGround)
         {
-            rb2D.linearVelocityY = jumpAmount;
+            jumping = true;
+        }
+        else
+        {
+            jumping = false;
+        }
+        
+        if (touchingGround && moveVector.x == 0)
+        {
+            idle = true;
+        }
+        else
+        {
+            idle = false;
+        }
+        
+        if (touchingGround && moveVector.x != 0)
+        {
+            running = true;
+        }
+        else
+        {
+            running = false;
         }
     }
 
-    void CheckForGround()
+    void GroundCheck()
     {
-        LayerMask groundLayer = LayerMask.GetMask("Ground");
-
-        touchingGround = Physics2D.Raycast(transform.position, Vector2.down, 1, groundLayer);
+        touchingGround = Physics2D.Raycast(transform.position, Vector2.down, 0.65f, groundLayer);
     }
 }
