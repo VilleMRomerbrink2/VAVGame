@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Animation : MonoBehaviour
 {
@@ -15,13 +14,11 @@ public class Animation : MonoBehaviour
     public Sprite[] jumpAnimation;
     int currentJumpSprite;
 
-    PlayerController playerMovement;
     SpriteRenderer spriteRenderer;
 
 
     void Awake()
     {
-        playerMovement = GetComponent<PlayerController>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
     void Start()
@@ -31,7 +28,7 @@ public class Animation : MonoBehaviour
 
     void Animate()
     {
-        if (playerMovement.running)
+        if (gameObject.tag == ("Running") && runAnimation.Length != 0)
         {
             currentRunSprite++;
             if (currentRunSprite >= runAnimation.Length)
@@ -46,7 +43,7 @@ public class Animation : MonoBehaviour
             currentRunSprite = 0;
         }
 
-        if (playerMovement.jumping)
+        if (gameObject.tag == ("Jumping") && jumpAnimation.Length != 0)
         {
             currentJumpSprite++;
             if (currentJumpSprite >= jumpAnimation.Length)
@@ -61,7 +58,7 @@ public class Animation : MonoBehaviour
             currentJumpSprite = 0;
         }
 
-        if (playerMovement.idle)
+        if (gameObject.tag == ("Idle") && idleAnimation.Length != 0)
         {
             currentIdleSprite++;
             if (currentIdleSprite >= idleAnimation.Length)

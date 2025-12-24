@@ -69,29 +69,19 @@ public class PlayerController : MonoBehaviour
     {
         if (!touchingGround)
         {
-            jumping = true;
+            gameObject.tag = ("Jumping");
+        }
+        else if (touchingGround && moveVector.x == 0)
+        {
+            gameObject.tag = ("Idle");
+        }
+        else if (touchingGround && moveVector.x != 0)
+        {
+            gameObject.tag = ("Running");
         }
         else
         {
-            jumping = false;
-        }
-        
-        if (touchingGround && moveVector.x == 0)
-        {
-            idle = true;
-        }
-        else
-        {
-            idle = false;
-        }
-        
-        if (touchingGround && moveVector.x != 0)
-        {
-            running = true;
-        }
-        else
-        {
-            running = false;
+            gameObject.tag = gameObject.name;
         }
     }
 
