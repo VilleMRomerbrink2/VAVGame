@@ -1655,6 +1655,7 @@ GameObject:
   - component: {fileID: 1627578724}
   - component: {fileID: 1627578722}
   - component: {fileID: 1627578726}
+  - component: {fileID: 1627578727}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -1780,6 +1781,23 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.15}
   m_Size: {x: 0.7, y: 1.1}
   m_Direction: 0
+--- !u!114 &1627578727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627578720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2742dc8fd41f45f4c868e7994fe699a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileAttack
+  projectileSpeed: 0
+  projectileHeight: 0
+  reloadTime: 2
+  isProjectile: 0
+  projectile: {fileID: 2841609454091832801, guid: f97def251d7560348a8ffba6203f05e2, type: 3}
 --- !u!1 &2035450082
 GameObject:
   m_ObjectHideFlags: 0
