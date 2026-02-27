@@ -12,6 +12,7 @@ public class Multiplayer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI hostCode;
     [SerializeField] TextMeshProUGUI joinCode;
+    public string joinCodeInspector;
 
     private async void Awake()
     {
@@ -31,9 +32,9 @@ public class Multiplayer : MonoBehaviour
 
     public void CallJoinServer()
     {
-        JoinRelay(joinCode.text);
+        JoinRelay(joinCodeInspector);
     }
-    public async void CreateHost()
+    private async void CreateHost()
     {
         try
         {
@@ -60,7 +61,7 @@ public class Multiplayer : MonoBehaviour
             Debug.Log(e); 
         }
     }
-    public async void JoinRelay(string joinCode)
+    private async void JoinRelay(string joinCode)
     {
         try
         {
