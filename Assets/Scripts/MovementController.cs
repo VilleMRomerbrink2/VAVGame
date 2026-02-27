@@ -50,7 +50,7 @@ public class MovementController : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (!IsOwner) return;
+        if (IsOwner) return;
         if (alive)
         {
             GroundCheck();
