@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
-public class MovementController : MonoBehaviour
+public class MovementController : NetworkBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] float moveSpeed;
@@ -10,7 +11,7 @@ public class MovementController : MonoBehaviour
     bool touchingGround;
     bool alive = true;
     bool isEnemy;
-    bool isPlayer;
+    bool isPlayer = true;
 
     Vector2 moveVector;
     LayerMask groundLayer;
@@ -49,6 +50,7 @@ public class MovementController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!IsOwner) return;
         if (alive)
         {
             GroundCheck();
@@ -66,6 +68,7 @@ public class MovementController : MonoBehaviour
 
     void Update()
     {
+        if (IsOwner) return;
         if (alive)
         {
             AnimationParameterCheck();
@@ -99,19 +102,22 @@ public class MovementController : MonoBehaviour
 
     void EnemyMovement()
     {
-        if (transform.position.x - player.transform.position.x > 0)
+        if (player != null)
         {
-            spriteRenderer.flipX = true;
-            rB.linearVelocityX = -moveSpeed;
-        }
-        else if (transform.position.x - player.transform.position.x < 0)
-        {
-            spriteRenderer.flipX = false;
-            rB.linearVelocityX = moveSpeed;
-        }
-        else
-        {
-            rB.linearVelocityX = 0;
+            if (transform.position.x - player.transform.position.x > 0)
+            {
+                spriteRenderer.flipX = true;
+                rB.linearVelocityX = -moveSpeed;
+            }
+            else if (transform.position.x - player.transform.position.x < 0)
+            {
+                spriteRenderer.flipX = false;
+                rB.linearVelocityX = moveSpeed;
+            }
+            else
+            {
+                rB.linearVelocityX = 0;
+            }
         }
     }
 
