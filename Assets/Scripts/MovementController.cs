@@ -52,7 +52,7 @@ public class MovementController : NetworkBehaviour
     void FixedUpdate()
     {
         if (!IsOwner) return;
-        if (IsServer && IsLocalPlayer)
+        if (IsHost)
         {
             if (alive)
             {
@@ -68,7 +68,7 @@ public class MovementController : NetworkBehaviour
                 }
             }
         }
-        else if (IsClient && IsLocalPlayer)
+        else if (IsClient)
         {
             if (alive)
             {
@@ -77,10 +77,6 @@ public class MovementController : NetworkBehaviour
                 if (isPlayer)
                 {
                     PlayerMovementServerRpc();
-                }
-                else if (isEnemy)
-                {
-                    EnemyMovement();
                 }
             }
         }
