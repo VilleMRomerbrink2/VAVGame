@@ -50,20 +50,18 @@ public class MovementController : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (IsOwner)
+        if (!IsOwner) return;
+        if (alive)
         {
-            if (alive)
-            {
-                GroundCheck();
+            GroundCheck();
 
-                if (isPlayer)
-                {
-                    PlayerMovement();
-                }
-                else if (isEnemy)
-                {
-                    EnemyMovement();
-                }
+            if (isPlayer)
+            {
+                PlayerMovement();
+            }
+            else if (isEnemy)
+            {
+                EnemyMovement();
             }
         }
     }
