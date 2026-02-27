@@ -66,6 +66,22 @@ public class MovementController : NetworkBehaviour
                 }
             }
         }
+        else if (IsClient)
+        {
+            if (alive)
+            {
+                GroundCheck();
+
+                if (isPlayer)
+                {
+                    PlayerMovement();
+                }
+                else if (isEnemy)
+                {
+                    EnemyMovement();
+                }
+            }
+        }
     }
 
     void Update()
