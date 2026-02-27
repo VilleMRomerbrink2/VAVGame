@@ -51,6 +51,7 @@ public class MovementController : NetworkBehaviour
 
     void FixedUpdate()
     {
+        if (!IsOwner) return;
         if (IsServer && IsLocalPlayer)
         {
             if (alive)
@@ -87,7 +88,7 @@ public class MovementController : NetworkBehaviour
 
     void Update()
     {
-        if (IsOwner) return;
+        if (!IsOwner) return;
         if (alive)
         {
             AnimationParameterCheck();
