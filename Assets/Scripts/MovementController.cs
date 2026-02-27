@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Netcode;
+using Unity.VisualScripting;
 
 public class MovementController : NetworkBehaviour
 {
@@ -50,18 +51,36 @@ public class MovementController : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (!IsOwner) return;
-        if (alive)
+        if (IsServer && IsLocalPlayer)
         {
-            GroundCheck();
+            if (alive)
+            {
+                GroundCheck();
 
-            if (isPlayer)
-            {
-                PlayerMovement();
+                if (isPlayer)
+                {
+                    PlayerMovement();
+                }
+                else if (isEnemy)
+                {
+                    EnemyMovement();
+                }
             }
-            else if (isEnemy)
+        }
+        else if (IsClient && IsLocalPlayer)
+        {
+            if (alive)
             {
-                EnemyMovement();
+                GroundCheck();
+
+                if (isPlayer)
+                {
+                    PlayerMovementServerRpc();
+                }
+                else if (isEnemy)
+                {
+                    EnemyMovement();
+                }
             }
         }
     }
@@ -76,6 +95,31 @@ public class MovementController : NetworkBehaviour
     }
 
     void PlayerMovement()
+    {
+        moveVector = moveAction.ReadValue<Vector2>();
+
+        if (moveVector.x > 0)
+        {
+            rB.linearVelocityX = moveSpeed;
+            spriteRenderer.flipX = false;
+        }
+        else if (moveVector.x < 0)
+        {
+            rB.linearVelocityX = -moveSpeed;
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            rB.linearVelocityX = 0;
+        }
+
+        if (touchingGround && jumpAction.IsPressed())
+        {
+            rB.linearVelocityY = jumpAmount;
+        }
+    }
+    [ServerRpc]
+    void PlayerMovementServerRpc()
     {
         moveVector = moveAction.ReadValue<Vector2>();
 
