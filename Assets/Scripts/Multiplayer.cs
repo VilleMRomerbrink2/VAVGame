@@ -11,8 +11,7 @@ using UnityEngine;
 public class Multiplayer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI hostCode;
-    [SerializeField] TextMeshProUGUI joinCode;
-    public string joinCodeInspector;
+    [SerializeField] TMP_InputField joinCode;
 
     private async void Awake()
     {
@@ -20,7 +19,7 @@ public class Multiplayer : MonoBehaviour
 
         AuthenticationService.Instance.SignedIn += () =>
         {
-            Debug.Log("Signed in" + AuthenticationService.Instance.PlayerId);
+            Debug.Log("Signed In " + AuthenticationService.Instance.PlayerId);
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
@@ -32,8 +31,9 @@ public class Multiplayer : MonoBehaviour
 
     public void CallJoinServer()
     {
-        JoinRelay(joinCodeInspector);
+        JoinRelay(joinCode.text);
     }
+
     private async void CreateHost()
     {
         try
@@ -65,7 +65,7 @@ public class Multiplayer : MonoBehaviour
     {
         try
         {
-            Debug.Log("Joining with relay" + joinCode);
+            Debug.Log("Joining With Relay " + joinCode);
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientRelayData

@@ -2365,7 +2365,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Multiplayer
   hostCode: {fileID: 1757202121}
-  joinCode: {fileID: 1754870620}
+  joinCode: {fileID: 834876628}
+  joinCodeInspector: 
 --- !u!4 &1578482574
 Transform:
   m_ObjectHideFlags: 0
